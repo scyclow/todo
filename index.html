@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-sortable/0.13.0/sortable.min.js"></script>
+
+  <script type="text/javascript" src="app/app.js"></script>
+  <script type="text/javascript" src="app/SessionController.js"></script>
+  <script type="text/javascript" src="app/TasksController.js"></script>
+
+  <link rel="stylesheet" type="text/css" href="app.css">
+
+  <title>ToDo</title>
+</head>
+
+<body ng-app="ToDoApplication" ng-controller='SessionController'>
+	<nav>
+		<button ng-show='loggedIn' ng-click='logout()'>Logout</button>		
+	</nav>
+
+	<div ng-show="loggedIn" ng-controller="TasksController as tasks">
+
+		<div id="sideBar">
+			<ul id="taskList" ui-sortable ng-model="tasks"> 
+				<li ng-repeat="task in tasks">
+					<span class="complete" ng-if="task.is_complete">
+						<input type="checkbox" checked ng-click="completed($index, false)">
+					</span>
+					<span class="incomplete" ng-if="!task.is_complete">
+						<input type="checkbox" ng-click="completed($index, true)">
+					</span>
+					{{task.description}}
+
+					<br>
+
+				</li>
+			</ul>
+		</div>
+		<div id="container">
+			<div id="newTask">
+				<h1>New Todo</h1>
+				<form ng-submit="create(description)">
+					<input id="newTaskDescription" ng-model="description" type="text"/>
+					<button type="submit">Create!</button>
+				</form>
+			</div>
+		</div>
+
+
+	</div>
+
+	<div id="newSession" ng-show='!loggedIn'>
+	
+		<h2>Login</h2>
+		<form name="loginForm" ng-submit="login(credentials.email, credentials.password)">
+			<input type='text' placeholder="Email" ng-model="credentials.email" />
+			<input type='password' placeholder="Password" ng-model="credentials.password" />
+			<button type='submit'> Login </button>
+		</form>
+
+		<h2>Create Account</h2>
+		<form name="createForm" ng-submit="createUser(newCredentials.email, newCredentials.password)">
+			<input type='text' placeholder="Email" ng-model="newCredentials.email" />
+			<input type='password' placeholder="Password" ng-model="newCredentials.password" />
+			<button type='submit'> Login </button>
+		</form>
+
+	</div>
+	<footer><span>ToDo for NextCapital. Built by Steve Pikelny using AngularJS.</span></footer>
+
+</body>
+</html>
